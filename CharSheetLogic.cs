@@ -71,13 +71,14 @@ namespace Project_Dexterum
 
 
         //Advantages
-        object[] Advantages { get; set; } = { };
+        public object[] Advantages { get; set; } = { };
+        public int DR { get; set; } = 0;
 
         //Disadvantages
-        object[] Disadvantages { get; set; } = { };
+        public object[] Disadvantages { get; set; } = { };
 
         //Skills
-        object[] Skills { get; set; } = { };
+        public object[] Skills { get; set; } = { };
 
         //PointCost
         public int PointCost { get { return Logic.Method_CharacterPointCalc(this); } }
@@ -86,6 +87,52 @@ namespace Project_Dexterum
         public object[] Gear { get; set; } = { };
 
 
+    }
+    public class Skills
+    {
+        /// <summary>
+        /// Уровень статы от которой зависит скилл
+        /// </summary>
+        public int StatLevel { get; set; } = 10;
+        public int PointPutted { get; set; }= 0;
+        public enum Hardiness {VeryHard, Hard, Average, Easy }
+        public Hardiness HowHard { get; set; } = Hardiness.Average;
+        public int Level { get { return SkillLevelCalc(this.PointPutted, this.HowHard, StatLevel); } }
+        internal int SkillLevelCalc(int pointsPutted, Hardiness hardiness, int StatLevel)
+        {
+            switch (hardiness)
+            {
+                case Hardiness.Easy:
+                    if(pointsPutted == 0) { return StatLevel-4; }
+                    else if(pointsPutted > 4) { return (StatLevel+2)+(int)Math.Floor(0.25*(pointsPutted-4)); }
+                    else
+                    {
+                        return StatLevel+(int)Math.Floor(pointsPutted*0.5);
+                    }
+                case Hardiness.Average:
+                    if (pointsPutted == 0) { return StatLevel - 5; }
+                    else if (pointsPutted > 4) { return (StatLevel + 1) + (int)Math.Floor(0.25 * (pointsPutted - 4)); }
+                    else
+                    {
+                        return StatLevel-1 + (int)Math.Floor(pointsPutted * 0.5);
+                    }
+                case Hardiness.Hard:
+                    if (pointsPutted == 0) { return StatLevel - 6; }
+                    else if (pointsPutted > 4) { return (StatLevel ) + (int)Math.Floor(0.25 * (pointsPutted - 4)); }
+                    else
+                    {
+                        return StatLevel-2 + (int)Math.Floor(pointsPutted * 0.5);
+                    }
+                case Hardiness.VeryHard:
+                    if (pointsPutted == 0) { return StatLevel - 10; }
+                    else if (pointsPutted > 4) { return (StatLevel -1) + (int)Math.Floor(0.25 * (pointsPutted - 4)); }
+                    else
+                    {
+                        return StatLevel-3 + (int)Math.Floor(pointsPutted * 0.5);
+                    }
+                default: return 60065;
+            }
+        }
     }
     /// <summary>
     /// Бибоиотека методов
