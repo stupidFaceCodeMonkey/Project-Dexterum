@@ -16,7 +16,7 @@ namespace Project_Dexterum
             public double Price { get; set; } = 1;
             public string ItemCategory { get; set; } = "Basic";
         }
-        public class GameItemWeaponMelee:GameItemBasic
+        public class GameItemWeaponMelee : GameItemBasic
         {
             public GameItemWeaponMelee() { ItemCategory = "Weapons"; }
             public Mechanics.Attack[] attacks { get; set; }
